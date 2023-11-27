@@ -1,7 +1,9 @@
 <?
+
 /**
-* load and configurer  the files needed to run the application
-*/
+ * load and configurer  the files needed to run the application
+ */
+
 declare(strict_types=1);
 
 /**
@@ -17,11 +19,11 @@ require __DIR__ . "/../../vendor/autoload.php";
 
 //These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
 use Framework\App;
-use App\Controllers\HomeController;
+use App\Controllers\IndexController;
 
 $app = new App();
 
-$app->get("/", [HomeController::class, "home"]);
+$app->get("/", [IndexController::class, "index"]);
 
 
 return $app;

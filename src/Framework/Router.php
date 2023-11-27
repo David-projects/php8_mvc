@@ -44,7 +44,7 @@ class Router
      * @param string $path: Path to route too
      * @param string $method: Method to be added GET, POST, PUT, DELETE
      */
-    public function dispatch(string $path, string $method) 
+    public function dispatch(string $path, string $method)
     {
         $path = $this->normalizePath($path);
         $method = strtoupper($method);
@@ -54,9 +54,9 @@ class Router
          * 
          */
         //TODO Add support for 404 page not found
-        foreach($this->routes AS $route) {
-            if(
-                !preg_match("#^{$route['path']}$#", $path) || 
+        foreach ($this->routes as $route) {
+            if (
+                !preg_match("#^{$route['path']}$#", $path) ||
                 $route['method'] !== $method
             ) {
                 continue;
@@ -70,7 +70,6 @@ class Router
 
             $controllerInstance = new $class;
             $controllerInstance->{$function}();
-
         }
     }
 }
