@@ -15,8 +15,13 @@ declare(strict_types=1);
  */
 require __DIR__ . "/../../vendor/autoload.php";
 
+//These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
 use Framework\App;
+use App\Controllers\HomeController;
 
 $app = new App();
+
+$app->get("/", [HomeController::class, "home"]);
+
 
 return $app;
