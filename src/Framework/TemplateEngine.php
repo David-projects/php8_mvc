@@ -35,11 +35,23 @@ class TemplateEngine
 
         //start output buffering so the page to build and then sent
         ob_start();
-        include "{$this->basePath}/{$template}";
+        include $this->resolve($template);
 
         $output = ob_get_clean(); //get output buffer contents
         ob_end_clean(); //clean and end output buffering
 
         return $output;
+    }
+
+    /**
+     * Builds path to the needed files to be rendered
+     * 
+     * @param string $path: Path to be rendered
+     * 
+     * @return string: full path
+     */
+    public function resolve(string $path)
+    {
+        return "{$this->basePath}/{$path}";
     }
 }

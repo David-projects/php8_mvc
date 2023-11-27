@@ -20,10 +20,11 @@ require __DIR__ . "/../../vendor/autoload.php";
 //These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
 use Framework\App;
 use App\Controllers\IndexController;
+use App\Controllers\AboutController;
 
 $app = new App();
 
 $app->get("/", [IndexController::class, "index"]);
-
+$app->get("/about", [AboutController::class, "index"]);
 
 return $app;
