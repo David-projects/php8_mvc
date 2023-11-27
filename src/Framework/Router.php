@@ -49,6 +49,28 @@ class Router
         $path = $this->normalizePath($path);
         $method = strtoupper($method);
 
-        echo $path.$method;
+        /**
+         * Looping thought all the routes to find the right one
+         * 
+         */
+        //TODO Add support for 404 page not found
+        foreach($this->routes AS $route) {
+            if(
+                !preg_match("#^{$route['path']}$#", $path) || 
+                $route['method'] !== $method
+            ) {
+                continue;
+            }
+
+            /**
+             * Gets the class and function call in the request.
+             * Then loads the controller and calls the function.
+             */
+            [$class, $function] = $route['controller'];
+
+            $controllerInstance = new $class;
+            $controllerInstance->{$function}();
+
+        }
     }
 }
