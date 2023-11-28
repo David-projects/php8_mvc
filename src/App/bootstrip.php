@@ -17,14 +17,14 @@ declare(strict_types=1);
  */
 require __DIR__ . "/../../vendor/autoload.php";
 
-//These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
 use Framework\App;
-use App\Controllers\IndexController;
-use App\Controllers\AboutController;
+use App\Config\Paths;
+use App\Config\Routes;
 
-$app = new App();
-
-$app->get("/", [IndexController::class, "index"]);
-$app->get("/about", [AboutController::class, "index"]);
+$app = new App(Paths::SOURCE . "App/container-definitions.php");
+//setup routes for the framework
+Routes::registerRouters($app);
 
 return $app;
+
+#dependencies injection

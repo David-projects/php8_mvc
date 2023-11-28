@@ -21,6 +21,8 @@ class TemplateEngine
      */
     public function render(string $template, array $data = [])
     {
+        $escapedData = $this->escape($data);
+        unset($data);
         /**
          * extracts all data from the array and puts it into they own params.
          * The is an associative array
@@ -31,7 +33,7 @@ class TemplateEngine
          * 
          * in the view
          */
-        extract($data, EXTR_SKIP);
+        extract($escapedData, EXTR_SKIP);
 
         //start output buffering so the page to build and then sent
         ob_start();
@@ -53,5 +55,24 @@ class TemplateEngine
     public function resolve(string $path)
     {
         return "{$this->basePath}/{$path}";
+    }
+
+    private function escape(array $data = []): array
+    {
+
+        if (!isset($data)) {
+            return [];
+        }
+
+        $escapedData = [];
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $escapedData[$key] = $this->escape($value);
+            }
+
+            $escapedData[$key] = htmlspecialchars($value);
+        }
+
+        return $escapedData;
     }
 }

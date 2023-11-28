@@ -7,7 +7,9 @@
     <hr />
 
     <!-- Escaping Data -->
-    <p>Escaping Data: </p>
+    <p>Escaping Data:
+        <? echo $dangerousData; ?>
+    </p>
 </section>
 <!-- End Main Content Area -->
 <? include $this->resolve("partials/_footer.php"); ?>

@@ -19,7 +19,7 @@ class IndexController
     public function index()
     {
         echo $this->view->render("/index.php", [
-            "title" => "Hello data again"
+            "title" => "PHP8 Upskilling"
         ]);
     }
 }

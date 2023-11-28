@@ -8,11 +8,19 @@ class App
 {
 
     private Router $router;
+    private Container $container;
 
-    public function __construct()
+    public function __construct(string $containDefinitionPath = null)
     {
-        #create route object to be used for routing
+        //create route object to be used for routing
         $this->router = new Router();
+        //Create container to create containers with dependencies injection
+        $this->container = new Container();
+
+        if ($containDefinitionPath) {
+            $containDefinitions = include $containDefinitionPath;
+            $this->container->addDefinition($containDefinitions);
+        }
     }
 
     public function run()

@@ -19,7 +19,7 @@ class AboutController
     public function index()
     {
         echo $this->view->render("/about.php", [
-            "title" => "Hello data again"
+            "dangerousData" => "<script>alert(123)</script>"
         ]);
     }
 }
