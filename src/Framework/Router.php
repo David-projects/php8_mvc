@@ -43,8 +43,9 @@ class Router
      * 
      * @param string $path: Path to route too
      * @param string $method: Method to be added GET, POST, PUT, DELETE
+     * @param Container $container: Container to be returned,
      */
-    public function dispatch(string $path, string $method)
+    public function dispatch(string $path, string $method, Container $contianer = null)
     {
         $path = $this->normalizePath($path);
         $method = strtoupper($method);
@@ -67,6 +68,8 @@ class Router
              * Then loads the controller and calls the function.
              */
             [$class, $function] = $route['controller'];
+
+            $controllerInstance = $contianer ? $contianer->resolve($class) : new $class;
 
             $controllerInstance = new $class;
             $controllerInstance->{$function}();
