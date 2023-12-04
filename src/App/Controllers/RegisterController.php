@@ -7,7 +7,7 @@ namespace App\Controllers;
 use Framework\TemplateEngine;
 use App\Config\Paths;
 
-class IndexController
+class RegisterController
 {
 
     public function __construct(private TemplateEngine $view)
@@ -16,8 +16,6 @@ class IndexController
 
     public function index()
     {
-        echo $this->view->render("/index.php", [
-            "title" => "PHP8 Upskilling"
-        ]);
+        echo $this->view->render("/register.php");
     }
 }

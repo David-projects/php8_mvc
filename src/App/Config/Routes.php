@@ -10,7 +10,7 @@ namespace App\Config;
 
 use Framework\App;
 //we need to import the controller so we can short cut the app->get call
-use App\Controllers\{IndexController, AboutController};
+use App\Controllers\{IndexController, AboutController, RegisterController};
 
 class Routes
 {
@@ -26,5 +26,6 @@ class Routes
         //These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
         $app->get("/", [IndexController::class, "index"]);
         $app->get("/about", [AboutController::class, "index"]);
+        $app->get("/register", [RegisterController::class, "index"]);
     }
 }
