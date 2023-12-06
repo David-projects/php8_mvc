@@ -7,3 +7,12 @@
 ##### update Routes.php with
 #####     use App\Controllers\{IndexController, AboutController, RegisterController};
 #####     $app->get("/register", [RegisterController::class, "index"]);
+
+
+#### Setup Validator
+##### Add new vaildator in folder Frameware/Rules
+##### Update App/Services/ValidatorService.php
+#####   Update use on line 8
+#####   Add new line in construct to call add function on the validator class
+#####   Add the new Validator in the validate{form} function. 
+

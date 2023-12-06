@@ -27,5 +27,6 @@ class Routes
         $app->get("/", [IndexController::class, "index"]);
         $app->get("/about", [AboutController::class, "index"]);
         $app->get("/register", [RegisterController::class, "index"]);
+        $app->post("/register", [RegisterController::class, "register"]);
     }
 }

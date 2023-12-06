@@ -60,7 +60,7 @@ class TemplateEngine
         return "{$this->basePath}/{$path}";
     }
 
-    private function escape(array $data = []): array
+    public function escape(array $data = []): array
     {
 
         if (!isset($data)) {
@@ -71,9 +71,9 @@ class TemplateEngine
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $escapedData[$key] = $this->escape($value);
+            } else {
+                $escapedData[$key] = htmlspecialchars($value);
             }
-
-            $escapedData[$key] = htmlspecialchars($value);
         }
 
         return $escapedData;
