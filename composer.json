@@ -13,5 +13,8 @@
         "files": [
             "src/App/Config/Middleware.php"
         ]
+    },
+    "scripts": {
+        "mvc": "php cli.php"
     }
 }
