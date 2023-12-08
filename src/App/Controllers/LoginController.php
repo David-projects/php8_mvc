@@ -10,7 +10,7 @@ use App\Services\{
     UserService
 };
 
-class RegisterController
+class LoginController
 {
 
     public function __construct(
@@ -22,15 +22,19 @@ class RegisterController
 
     public function index()
     {
-        echo $this->view->render("/register.php");
+        echo $this->view->render("/login.php");
     }
 
-    public function register()
+    public function auth()
     {
-        $this->validatorService->validateRegister($_POST);
-        $this->userService->isEmailTaken($_POST['email']);
-        $this->userService->createUser($_POST);
-
+        $this->validatorService->vaildateLogin($_POST);
+        $this->userService->authUser($_POST);
         redirectTo('/');
+    }
+
+    public function logout()
+    {
+        $this->userService->logout();
+        redirectTo('/login');
     }
 }

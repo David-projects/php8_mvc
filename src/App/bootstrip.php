@@ -20,7 +20,11 @@ require __DIR__ . "/../../vendor/autoload.php";
 use Framework\App;
 use App\Config\Paths;
 use App\Config\Routes;
+use Dotenv\Dotenv;
 use function App\Config\registerMiddleware;
+
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load();
 
 $app = new App(Paths::SOURCE . "App/container-definitions.php");
 //setup routes for the framework

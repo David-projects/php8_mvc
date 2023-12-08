@@ -21,17 +21,9 @@ class ValidatorService
     public function __construct()
     {
         $this->validator = new Validator();
-        // Add new vaildators here when creatding a new form.
-        // This will need to be updated as I do not see why we need to add vaildators when not using them.
-        $this->validator->add('required', new RequiredRule());
-        $this->validator->add('email', new EmailRule());
-        $this->validator->add('min', new MinRule());
-        $this->validator->add('in', new InRule());
-        $this->validator->add('url', new UrlRule());
-        $this->validator->add('match', new MatchRule());
     }
 
-    
+
     /**
      * Register from. This form is to register the user
      * This will need to be recreated for the next page
@@ -40,6 +32,14 @@ class ValidatorService
      */
     public function validateRegister(array $formData)
     {
+        // Add new vaildators here when creatding a new form.
+        $this->validator->add('required', new RequiredRule());
+        $this->validator->add('email', new EmailRule());
+        $this->validator->add('min', new MinRule());
+        $this->validator->add('in', new InRule());
+        $this->validator->add('url', new UrlRule());
+        $this->validator->add('match', new MatchRule());
+
         $this->validator->validate($formData, [
             'email' => ['required', 'email'],
             'age' => ['required', 'min:18'],
@@ -48,6 +48,23 @@ class ValidatorService
             'password' => ['required'],
             'confirmPassword' => ['required', 'match:password'],
             'tos' => ['required'],
+        ]);
+    }
+
+    /**
+     * login from. This form is to login the user
+     *  
+     * @param array $formData: data from the from on the page
+     */
+    public function vaildateLogin(array $formData)
+    {
+        // Add new vaildators here when creatding a new form.
+        $this->validator->add('required', new RequiredRule());
+        $this->validator->add('email', new EmailRule());
+
+        $this->validator->validate($formData, [
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
     }
 }

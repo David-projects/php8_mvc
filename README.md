@@ -16,3 +16,12 @@
 #####   Add new line in construct to call add function on the validator class
 #####   Add the new Validator in the validate{form} function. 
 
+
+### Stop Session Hijacking
+
+##### session_set_cookie_params([
+#####             'secure' => $_ENV['APP_ENV'] === "production",
+#####             'httponly' => true,
+#####             'samesite' => 'lax'
+#####         ]);
+##### session_regenerate_id();

@@ -10,7 +10,17 @@ namespace App\Config;
 
 use Framework\App;
 //we need to import the controller so we can short cut the app->get call
-use App\Controllers\{IndexController, AboutController, RegisterController};
+use App\Controllers\{
+    IndexController,
+    AboutController,
+    RegisterController,
+    LoginController
+};
+
+use App\Middleware\{
+    AuthRequiredMiddleware,
+    GuestOnlyMiddleware
+};
 
 class Routes
 {
@@ -24,9 +34,12 @@ class Routes
     static function registerRouters(App $app)
     {
         //These are so we can use {Controller}::class and we to not make misstakes when calling $app->get
-        $app->get("/", [IndexController::class, "index"]);
+        $app->get("/", [IndexController::class, "index"])->add(AuthRequiredMiddleware::class);
         $app->get("/about", [AboutController::class, "index"]);
-        $app->get("/register", [RegisterController::class, "index"]);
-        $app->post("/register", [RegisterController::class, "register"]);
+        $app->get("/register", [RegisterController::class, "index"])->add(GuestOnlyMiddleware::class);
+        $app->post("/register", [RegisterController::class, "register"])->add(GuestOnlyMiddleware::class);
+        $app->get("/login", [LoginController::class, "index"])->add(GuestOnlyMiddleware::class);
+        $app->post("/auth", [LoginController::class, "auth"])->add(GuestOnlyMiddleware::class);
+        $app->get("/logout", [LoginController::class, "logout"])->add(AuthRequiredMiddleware::class);
     }
 }

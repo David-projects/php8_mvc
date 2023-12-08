@@ -15,6 +15,9 @@ class FlashMiddleware implements MiddlewareInterface
     }
     public function process(callable $next)
     {
+        if (!isset($_SESSION['oldFormData'])) {
+            $_SESSION['oldFormData']['country'] = '';
+        }
         //adding data for the templates to display the from feilds and errors
         $this->view->addGlobal('errors', $this->view->escape($_SESSION['errors'] ?? []));
         $this->view->addGlobal('oldFormData', $this->view->escape($_SESSION['oldFormData'] ?? []));

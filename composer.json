@@ -2,7 +2,9 @@
     "name": "david/mvc",
     "description": "A PHP MVC framework",
     "type": "project",
-    "require": {},
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
     "autoload": {
         "_comment\\": "We are using PSR coding standards in this project please ensure you use them https://www.php-fig.org/",
         "psr-4": {

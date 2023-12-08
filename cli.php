@@ -1,20 +1,25 @@
 <?
 
 include __DIR__ . "/src/Framework/database.php";
+require __DIR__ . "/../../vendor/autoload.php";
 
 use Framework\Database;
+use App\Config\Paths;
+use DOTenv\Dotenv;
 
-$db = new Database("mysql", [
-    "host"  => "localhost",
-    "port" => 3306,
-    "dbname" => "php8-learning",
-], "", "");
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load();
 
-$connection = $db->getConnection();
+$db = new Database($_ENV['DB_DRIVER'], [
+    "host"  => $_ENV['DB_HOST'],
+    "port" => $_ENV['DB_PORT'],
+    "dbname" => $_ENV['DB_NAME'],
+], $_ENV['DB_USER'], $_ENV['DB_PASS']);
 
 try {
     //SQL Injection fix
     #$search = "Hats' OR 1=1 -- ";
+    $search = 'Hats';
 
     #$query = "SELECT * FROM products";
 
@@ -26,11 +31,5 @@ try {
 
     print_r($result);
 } catch (Exception $e) {
-    if ($connection->inTransaction()) {
-        $connection->rollBack();
-    }
-    echo "transaction failed";
     echo $e->getMessage();
 }
-
-$search = 'Hats';
