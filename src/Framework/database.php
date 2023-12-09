@@ -9,6 +9,8 @@ use PDO, PDOException, Exception,  PDOStatement;
 class Database
 {
     private $connection;
+    private $lastInsertedId = 0;
+
     public function __construct(string $driver, array $config, string $username, string $password)
     {
         $config = http_build_query(data: $config, arg_separator: ';');
@@ -38,13 +40,31 @@ class Database
     public function insert(string $query, array $data = [])
     {
         try {
-            $stmt = $this->query($query, $data);
+            $this->lastInsertedId = 0;
+            $this->connection->beginTransaction();
+            $stmt = $this->connection->prepare($query);
+
+            $stmt = $this->bindValues($stmt, $data);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 1) {
+                $this->lastInsertedId = $this->connection->lastInsertId();
+            }
+
+            $this->connection->commit();
+
             return $stmt->rowCount() > 0 ? $stmt->rowCount() : 0;
         } catch (Exception $e) {
             print("transaction failed");
             print($e->getMessage());
             throw new Exception("Error with database query inserting data");
         }
+    }
+
+    public function getLastInsertedId()
+    {
+        return $this->lastInsertedId;
     }
 
     public function select(string $query, array $data = [])

@@ -1,5 +1,12 @@
 <?
 
+function d($value)
+{
+    echo "<pre>";
+    print_r($value);
+    echo "</pre>";
+}
+
 function dd($value)
 {
     echo "<pre>";

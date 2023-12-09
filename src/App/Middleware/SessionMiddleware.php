@@ -22,6 +22,7 @@ class SessionMiddleware implements MiddlewareInterface
             throw new SessionException("Headers already sent. Consider enbling output buffering. Data outputted from {$filename} - Line {$line}.");
         }
 
+        //Setup sessions to help provent sessions Hijacking
         session_set_cookie_params([
             'secure' => $_ENV['APP_ENV'] === "production",
             'httponly' => true,

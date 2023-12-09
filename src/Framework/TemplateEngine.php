@@ -72,11 +72,20 @@ class TemplateEngine
             if (is_array($value)) {
                 $escapedData[$key] = $this->escape($value);
             } else {
-                $escapedData[$key] = htmlspecialchars($value);
+                $escapedData[$key] = $this->escapeString($value);
             }
         }
 
         return $escapedData;
+    }
+
+    public function escapeString(string $data = ''): string
+    {
+
+        if (!isset($data)) {
+            return '';
+        }
+        return htmlspecialchars($data);
     }
 
     public function addGlobal(string $key, mixed $value)

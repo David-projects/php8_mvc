@@ -9,13 +9,17 @@ use App\Middleware\{
     TemplateDataMiddleware,
     ValidationExcptionMiddleware,
     SessionMiddleware,
-    FlashMiddleware
+    FlashMiddleware,
+    CsrfTokenMiddleware,
+    CsrfGuardMiddleware,
 };
 
 
 // used to add middleware to the app. The middleware can be called before or after the controller
 function registerMiddleware(App $app)
 {
+    $app->addMiddleware(CsrfGuardMiddleware::class);
+    $app->addMiddleware(CsrfTokenMiddleware::class);
     $app->addMiddleware(TemplateDataMiddleware::class);
     $app->addMiddleware(ValidationExcptionMiddleware::class);
     $app->addMiddleware(FlashMiddleware::class);

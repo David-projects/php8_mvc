@@ -41,6 +41,9 @@ class UserService
         ];
 
         $count = $this->db->insert($query, $data);
+
+        session_regenerate_id();
+        $_SESSION['user'] = $this->db->getLastInsertedId();
     }
 
     public function authUser(array $formData)
