@@ -14,7 +14,8 @@ use App\Controllers\{
     IndexController,
     AboutController,
     RegisterController,
-    LoginController
+    LoginController,
+    TransactionController,
 };
 
 use App\Middleware\{
@@ -41,5 +42,10 @@ class Routes
         $app->get("/login", [LoginController::class, "index"])->add(GuestOnlyMiddleware::class);
         $app->post("/auth", [LoginController::class, "auth"])->add(GuestOnlyMiddleware::class);
         $app->get("/logout", [LoginController::class, "logout"])->add(AuthRequiredMiddleware::class);
+        $app->get("/transaction", [TransactionController::class, "createView"])->add(AuthRequiredMiddleware::class);
+        $app->post("/transaction", [TransactionController::class, "create"])->add(AuthRequiredMiddleware::class);
+        $app->get("/transaction/{transaction}", [TransactionController::class, "editView"]); #->add(AuthRequiredMiddleware::class);
+        $app->post("/transaction/{transaction}", [TransactionController::class, "edit"]); #->add(AuthRequiredMiddleware::class);
+        $app->delete("/transaction/{transaction}", [TransactionController::class, "delete"]); #->add(AuthRequiredMiddleware::class);
     }
 }

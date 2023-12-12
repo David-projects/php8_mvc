@@ -12,6 +12,9 @@ use Framework\Rules\{
     InRule,
     UrlRule,
     MatchRule,
+    LengthMaxRule,
+    NumericRule,
+    DateFormatRule
 };
 
 class ValidatorService
@@ -20,9 +23,10 @@ class ValidatorService
 
     public function __construct()
     {
+        // Add new vaildators here when creatding a new form.
         $this->validator = new Validator();
+        $this->validator->add('required', new RequiredRule());
     }
-
 
     /**
      * Register from. This form is to register the user
@@ -33,7 +37,6 @@ class ValidatorService
     public function validateRegister(array $formData)
     {
         // Add new vaildators here when creatding a new form.
-        $this->validator->add('required', new RequiredRule());
         $this->validator->add('email', new EmailRule());
         $this->validator->add('min', new MinRule());
         $this->validator->add('in', new InRule());
@@ -59,12 +62,30 @@ class ValidatorService
     public function vaildateLogin(array $formData)
     {
         // Add new vaildators here when creatding a new form.
-        $this->validator->add('required', new RequiredRule());
         $this->validator->add('email', new EmailRule());
 
         $this->validator->validate($formData, [
             'email' => ['required', 'email'],
             'password' => ['required'],
+        ]);
+    }
+
+    /**
+     * Transaction from. This form is for transactions the user enters
+     *  
+     * @param array $formData: data from the from on the page
+     */
+    public function validateTransaction(array $formData)
+    {
+        // Add new vaildators here when creatding a new form.
+        $this->validator->add('lengthMax', new LengthMaxRule());
+        $this->validator->add('numeric', new NumericRule());
+        $this->validator->add('dateFormat', new DateFormatRule());
+
+        $this->validator->validate($formData, [
+            'description' => ['required', 'lengthMax:255'],
+            'amount' => ['required', 'numeric'],
+            'date' => ['required', 'dateFormat:Y-m-d'],
         ]);
     }
 }

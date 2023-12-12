@@ -99,6 +99,18 @@ class Database
         }
     }
 
+    public function update($query, $data)
+    {
+        $stmt = $this->query($query, $data);
+        return $stmt->rowCount();
+    }
+
+    public function delete($query, $data)
+    {
+        $stmt = $this->query($query, $data);
+        return $stmt->rowCount();
+    }
+
     private function bindValues($stmt, array $data = []): PDOStatement
     {
         if (!empty($data)) {

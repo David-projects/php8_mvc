@@ -79,12 +79,14 @@ class TemplateEngine
         return $escapedData;
     }
 
-    public function escapeString(string $data = ''): string
+    public function escapeString(mixed $data = ''): string
     {
 
         if (!isset($data)) {
             return '';
         }
+        $data = (string) $data;
+
         return htmlspecialchars($data);
     }
 
