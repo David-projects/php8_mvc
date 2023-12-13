@@ -8,6 +8,7 @@ class Router
 {
     private array $routes = [];
     private array $middlewares = [];
+    private array $errorHandler;
 
     /**
      * adds a route to the router
@@ -51,7 +52,7 @@ class Router
      * @param string $method: Method to be added GET, POST, PUT, DELETE
      * @param Container $container: Container to be returned,
      */
-    public function dispatch(string $path, string $method, Container $contianer = null)
+    public function dispatch(string $path, string $method, Container $container = null)
     {
         $path = $this->normalizePath($path);
         $method = strtoupper($_POST['_METHOD'] ?? $method);
@@ -60,7 +61,6 @@ class Router
          * Looping thought all the routes to find the right one
          * 
          */
-        //TODO Add support for 404 page not found
         foreach ($this->routes as $route) {
 
             if (
@@ -81,7 +81,7 @@ class Router
              */
             [$class, $function] = $route['controller'];
 
-            $controllerInstance = $contianer ? $contianer->resolve($class) : new $class;
+            $controllerInstance = $container ? $container->resolve($class) : new $class;
 
             $allMiddleware = [...$route['middlewares'], ...$this->middlewares];
 
@@ -89,7 +89,7 @@ class Router
             $action = fn () => $controllerInstance->{$function}($params);
 
             foreach ($allMiddleware as $middleware) {
-                $middlewareInstance = $contianer ? $contianer->resolve($middleware) : new $middleware();
+                $middlewareInstance = $container ? $container->resolve($middleware) : new $middleware();
                 $action = fn () => $middlewareInstance->process($action);
             }
 
@@ -97,6 +97,8 @@ class Router
 
             return;
         }
+
+        $this->dispatchNotFound($container);
     }
 
     public function addMiddleware(string $middleware)
@@ -108,5 +110,25 @@ class Router
     {
         $lastRoutekey = array_key_last($this->routes);
         $this->routes[$lastRoutekey]['middlewares'][] = $middleware;
+    }
+
+    public function setErrorHandler(array $controller)
+    {
+        $this->errorHandler = $controller;
+    }
+
+    public function dispatchNotFound(?Container $container)
+    {
+        [$class, $function] = $this->errorHandler;
+        $controllerInstance = $container ? $container->resolve($class) : new $class;
+
+        $action = fn () => $controllerInstance->$function();
+
+        foreach ($this->middlewares as $middleware) {
+            $middlewareInstance = $container ? $container->resolve($middleware) : new $class;
+            $action = fn () => $middlewareInstance->process($action);
+        }
+
+        $action();
     }
 }

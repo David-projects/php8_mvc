@@ -33,8 +33,8 @@ class TransactionService
     {
         $searchTerm = addcslashes($_GET['s'] ?? '', '%_');
 
-        $query = "SELECT *, DATE_FORMAT(date, '%d-%m-%Y') as formatted_date 
-        FROM transaction 
+        $query = "SELECT *, DATE_FORMAT(date, '%d-%m-%Y') as formatted_date
+        FROM transaction
         WHERE user_id = :user_id 
         AND description LIKE :description
         LIMIT {$length} OFFSET {$offset}";
@@ -45,6 +45,19 @@ class TransactionService
         ];
 
         $transactions = $this->db->selectAll($query, $data);
+
+
+        $transactions = array_map(function (array $transaction) {
+            $query = "SELECT * FROM receipts WHERE transaction_id = :transactionId";
+
+            $data = [
+                ':transactionId' => $transaction['id']
+            ];
+
+            $transaction['receipts'] = $this->db->selectAll($query, $data);
+
+            return $transaction;
+        }, $transactions);
 
         $transactionCountQuery = "SELECT COUNT(*) 
         FROM transaction 

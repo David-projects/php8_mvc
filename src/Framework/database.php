@@ -107,8 +107,7 @@ class Database
 
     public function delete($query, $data)
     {
-        $stmt = $this->query($query, $data);
-        return $stmt->rowCount();
+        $this->query($query, $data);
     }
 
     private function bindValues($stmt, array $data = []): PDOStatement

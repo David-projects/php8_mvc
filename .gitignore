@@ -400,3 +400,5 @@ FodyWeavers.xsd
 /vendor/
 /vhost/vhost.conf
 .env
+./storage/uploads/
+!./storage/uploads/readme.md

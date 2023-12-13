@@ -44,6 +44,18 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   FOREIGN KEY(`user_id`) REFERENCES `users`(`id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+
+CREATE TABLE IF NOT EXISTS receipts(
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  original_filename varchar(255) NOT NULL,
+  storage_filename varchar(255) NOT NULL,
+  media_type varchar(255) NOT NULL,
+  transaction_id bigint(20) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY(transaction_id) REFERENCES transaction (id) ON DELETE CASCADE
+);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
